@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <HBox fx:id="addCharacterForm">
+         <children>
+            <Button mnemonicParsing="false" onAction="#addCharacter" text="Add Character" />
+            <TextField fx:id="nameField" promptText="Name">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </TextField>
+            <TextField fx:id="rollField" prefWidth="45.0" promptText="Roll">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </TextField>
+            <TextField fx:id="attackField" prefWidth="70.0" promptText="Attacks">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <ScrollPane fitToHeight="true" fitToWidth="true" hmin="30.0" minHeight="300.0">
+         <content>
+            
+            <TableView id="tblCharacters" fx:id="tblCharacters" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+              <columns>
+                  <TableColumn id="tcName" fx:id="tcName" prefWidth="75" text="Character" />
+                  <TableColumn fx:id="tcRoll" prefWidth="45.0" text="Roll" />
+                  <TableColumn fx:id="tcAttacks" prefWidth="65.0" text="Attacks" />
+                  <TableColumn fx:id="tcI30" prefWidth="35" sortable="false" text="30" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI29" prefWidth="35" sortable="false" text="29" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI28" prefWidth="35" sortable="false" text="28" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI27" prefWidth="35" sortable="false" text="27" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI26" prefWidth="35" sortable="false" text="26" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI25" prefWidth="35" sortable="false" text="25" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI24" prefWidth="35" sortable="false" text="24" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI23" prefWidth="35" sortable="false" text="23" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI22" prefWidth="35" sortable="false" text="22" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI21" prefWidth="35" sortable="false" text="21" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI20" prefWidth="35" sortable="false" styleClass="attackCol" text="20" />
+                  <TableColumn fx:id="tcI19" prefWidth="35" sortable="false" text="19" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI18" prefWidth="35" sortable="false" text="18" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI17" prefWidth="35" sortable="false" text="17" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI16" prefWidth="35" sortable="false" text="16" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI15" prefWidth="35" sortable="false" text="15" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI14" prefWidth="35" sortable="false" text="14" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI13" prefWidth="35" sortable="false" text="13" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI12" prefWidth="35" sortable="false" text="12" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI11" prefWidth="35" sortable="false" text="11" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI10" prefWidth="35" sortable="false" text="10" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI9" prefWidth="35" sortable="false" text="9" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI8" prefWidth="35" sortable="false" text="8" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI7" prefWidth="35" sortable="false" text="7" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI6" prefWidth="35" sortable="false" text="6" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI5" prefWidth="35" sortable="false" text="5" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI4" prefWidth="35" sortable="false" text="4" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI3" prefWidth="35" sortable="false" text="3" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI2" prefWidth="35" sortable="false" text="2" styleClass="attackCol" />
+                  <TableColumn fx:id="tcI1" prefWidth="35" sortable="false" text="1" styleClass="attackCol" />
+      
+              </columns>
+            </TableView>
+      
+         </content>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </ScrollPane>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>
