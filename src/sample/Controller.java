@@ -2,14 +2,15 @@ package sample;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableSet;
+import javafx.collections.SetChangeListener;
 import javafx.concurrent.Task;
+import javafx.css.PseudoClass;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Cell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
@@ -20,6 +21,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class Controller implements Initializable {
     @FXML
@@ -27,6 +29,7 @@ public class Controller implements Initializable {
 
     @FXML
     public TextField nameField;
+    public TableColumn tcI30;
     public TableColumn tcI29;
     public TableColumn tcI28;
     public TableColumn tcI27;
@@ -58,6 +61,7 @@ public class Controller implements Initializable {
     public TableColumn tcI1;
     public TextField attackField;
     public TextField rollField;
+    public int turn = 3;
 
     @FXML
     TableColumn<Character, String> tcName;
@@ -71,8 +75,6 @@ public class Controller implements Initializable {
     @FXML
     TableColumn<Character, Number> tcAttacks;
 
-    @FXML
-    TableColumn<Character, String> tcI30;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -134,7 +136,15 @@ public class Controller implements Initializable {
            }
         });
 
+        Callback<TableColumn, TableCell> stringCellFactory = new Callback<TableColumn, TableCell>() {
+            @Override
+            public TableCell call(TableColumn param) {
+                return null;
+            }
+        };
+
         tcI30.setCellValueFactory(new PropertyValueFactory<Character, String>("i30"));
+        //tcI30.setCellFactory();
         tcI30.setCellValueFactory(new PropertyValueFactory<Character, String>("i30"));
         tcI29.setCellValueFactory(new PropertyValueFactory<Character, String>("i29"));
         tcI28.setCellValueFactory(new PropertyValueFactory<Character, String>("i28"));
@@ -165,6 +175,12 @@ public class Controller implements Initializable {
         tcI3.setCellValueFactory(new PropertyValueFactory<Character, String>("i3"));
         tcI2.setCellValueFactory(new PropertyValueFactory<Character, String>("i2"));
         tcI1.setCellValueFactory(new PropertyValueFactory<Character, String>("i1"));
+
+        ObservableSet<TableColumn<?,?>> highlightColumns = FXCollections.observableSet();
+
+        highlightColumns.add(tcI30);
+
+        tblCharacters.getColumns().forEach(col -> highlightColumnWhenNeeded(col, highlightColumns));
 
         //Add predefined characters
         tblCharacters.getItems().addAll( fetchData() );
@@ -221,6 +237,41 @@ public class Controller implements Initializable {
         new Thread(task).start();
     }
 
+    private void highlightCol() {
+        ObservableSet<TableColumn<?,?>> highlightColumns = FXCollections.observableSet();
+
+        highlightColumns.add(tblCharacters.getColumns().get(turn));
+
+        tblCharacters.getColumns().forEach(col -> highlightColumnWhenNeeded(col, highlightColumns));
+
+        System.out.println("Next Turn is: " + turn);
+
+    }
+
+    @FXML
+    private void nextTurn() {
+        if (turn == (tblCharacters.getColumns().size() - 1 ) ) {
+            turn = 3;
+
+        } else {
+            turn = turn + 1;
+        }
+
+        highlightCol();
+
+    }
+
+    @FXML
+    private void prevTurn() {
+        if (turn == 3) {
+            turn = (tblCharacters.getColumns().size() - 1 );
+        } else {
+            turn = turn - 1;
+        }
+
+        highlightCol();
+    }
+
     private List<Character> fetchData() {
 
         List<Character> characterList = new ArrayList<>();
@@ -228,9 +279,37 @@ public class Controller implements Initializable {
         characterList.add( new Character("Gideon") );
         characterList.add( new Character("Mike" ) );
         characterList.add( new Character("Mars" ) );
+        characterList.add( new Character("Lawrence") );
 
         return characterList;
     }
 
+    private <S,T> void highlightColumnWhenNeeded(TableColumn<S,T> column, ObservableSet<TableColumn<?,?>> highlightColumns) {
+
+        Callback<TableColumn<S,T>, TableCell<S,T>> currentCellFactory = column.getCellFactory() ;
+
+        PseudoClass highlight = PseudoClass.getPseudoClass("highlight");
+
+        column.setCellFactory(tc -> {
+            TableCell<S,T> cell = currentCellFactory.call(tc);
+            highlightColumns.addListener((SetChangeListener.Change<? extends TableColumn<?,?>> c) ->
+                    cell.pseudoClassStateChanged(highlight,
+                            highlightColumns.contains(column)));
+
+            cell.pseudoClassStateChanged(highlight, highlightColumns.contains(column));
+
+            return cell ;
+        });
+    }
+
+    private static <S,T> TableColumn<S,T> column(String text, Function<S, ObservableValue<T>> property) {
+        TableColumn<S,T> col = new TableColumn<>(text);
+        col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
+        return col ;
+    }
+
+    class turnCell extends TableCell<Character, String> {
+
+    }
 
 }
