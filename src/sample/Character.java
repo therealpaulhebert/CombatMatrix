@@ -1,14 +1,11 @@
 package sample;
 
-import java.util.ArrayList;
-
 import static java.lang.Math.abs;
 
 public class Character {
     private String name;
     private int roll;
     private int attacks;
-    private int[] attackPace;
     private String i30;
     private String i29;
     private String i28;
@@ -55,20 +52,32 @@ public class Character {
 
     public void attackCadence (int roll, int attack) {
         if (attack > 0) {
+        	if (roll < attack) {
+        		System.out.print("Roll is less than attack, changing calculated roll to " + attack );
+        		roll = attack;
+        	}
             int[] attacksAt = new int[attack];
 
             int deviation = (roll + attack - 1) / attack;
             int i = 1;
 
             System.out.println("Start with " + roll + "; Deviation is: " + deviation);
+            System.out.println("");
 
             attacksAt[0] = roll;
 
             int attackAt = roll - deviation;
-            while (i <= attack - 1) {
+            
+            while (i <= attack - 1 ) {
                 attacksAt[i] = attackAt;
                 System.out.println("Next attack @ " + attackAt);
-
+                
+            	int remainingAttacks = (attacks - i) ;
+            	if (remainingAttacks > attackAt - 1 ) {
+            		System.out.println("**** There are more attacks than spaces left! attackAt:" + attackAt + " remaining attacks: " + remainingAttacks);
+            		deviation = (attackAt  + remainingAttacks - 1) / remainingAttacks;
+            	}
+                
                 if (attackAt <= deviation) {
                     attackAt = attackAt - 1;
                 } else attackAt = attackAt - deviation;
@@ -232,10 +241,6 @@ public class Character {
 
     public void setAttacks(int attacks) {
         this.attacks = abs(attacks);
-    }
-
-    public void setAttackPace(int[] attackPace) {
-        this.attackPace = attackPace;
     }
 
     public String getI30() {

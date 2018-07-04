@@ -3,16 +3,19 @@ package sample;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import javafx.concurrent.Task;
 import javafx.css.PseudoClass;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import javafx.util.converter.NumberStringConverter;
@@ -29,7 +32,7 @@ public class Controller implements Initializable {
 
     @FXML
     public TextField nameField;
-    public TableColumn tcI30;
+    public TableColumn<Character, String> tcI30;
     public TableColumn tcI29;
     public TableColumn tcI28;
     public TableColumn tcI27;
@@ -128,6 +131,7 @@ public class Controller implements Initializable {
 
                rowChar.clearAttacks();
                rowChar.attackCadence(rowChar.getRoll(), rowChar.getAttacks());
+               
                //Stupid hack as it doesn't show unless you hide and show
                e.getTableView().getColumns().get(3).setVisible(false);
                e.getTableView().getColumns().get(3).setVisible(true);
@@ -135,16 +139,106 @@ public class Controller implements Initializable {
                //cadence(rowChar.getRoll(), rowChar.getAttacks());
            }
         });
+        
+        
+        Callback<TableColumn<Character, String>, TableCell<Character, String>> redCellCallback = new Callback<TableColumn<Character, String>, TableCell<Character, String>> () {
 
-        Callback<TableColumn, TableCell> stringCellFactory = new Callback<TableColumn, TableCell>() {
-            @Override
-            public TableCell call(TableColumn param) {
-                return null;
-            }
+			@Override
+			public TableCell<Character, String> call(TableColumn<Character, String> column) {
+				TableCell<Character, String> tc = new TableCell<Character, String>() {
+					@Override
+					public void updateItem(String item, boolean empty) {
+						if(item != null) {
+							setText(item);
+						}
+					}
+				};
+				tc.setOnMouseClicked(e -> {
+						ObservableList<String> styles = tc.getStyleClass();
+						boolean isRed = false;
+						for( String style : styles) {
+							if (style.equals("redText")) {
+								isRed = true;
+								break;
+							} 
+						}
+						if(isRed) {
+							tc.getStyleClass().remove("redText"); 
+						} else {
+							tc.getStyleClass().add("redText");
+						}	
+				});
+				return tc;
+			}
+        	
         };
+        
+
+        /***********************************************
+        tcI30.setCellFactory(new Callback<TableColumn<Character, String>, TableCell<Character, String>> () {
+
+			@Override
+			public TableCell<Character, String> call(TableColumn<Character, String> column) {
+				TableCell<Character, String> tc = new TableCell<Character, String>() {
+					@Override
+					public void updateItem(String item, boolean empty) {
+						if(item != null) {
+							setText(item);
+						}
+					}
+				};
+				tc.setOnMouseClicked(e -> {
+						ObservableList<String> styles = tc.getStyleClass();
+						boolean isRed = false;
+						for( String style : styles) {
+							if (style.equals("redText")) {
+								isRed = true;
+								break;
+							} 
+						}
+						if(isRed) {
+							tc.getStyleClass().remove("redText"); 
+						} else {
+							tc.getStyleClass().add("redText");
+						}	
+				});
+				return tc;
+			}
+        	
+        });
+        ************************/
+        tcI30.setCellFactory(redCellCallback);
+        tcI29.setCellFactory(redCellCallback);
+        tcI28.setCellFactory(redCellCallback);
+        tcI27.setCellFactory(redCellCallback);
+        tcI26.setCellFactory(redCellCallback);
+        tcI25.setCellFactory(redCellCallback);
+        tcI24.setCellFactory(redCellCallback);
+        tcI23.setCellFactory(redCellCallback);
+        tcI22.setCellFactory(redCellCallback);
+        tcI21.setCellFactory(redCellCallback);
+        tcI20.setCellFactory(redCellCallback);
+        tcI19.setCellFactory(redCellCallback);
+        tcI18.setCellFactory(redCellCallback);
+        tcI17.setCellFactory(redCellCallback);
+        tcI16.setCellFactory(redCellCallback);
+        tcI15.setCellFactory(redCellCallback);
+        tcI14.setCellFactory(redCellCallback);
+        tcI13.setCellFactory(redCellCallback);
+        tcI12.setCellFactory(redCellCallback);
+        tcI11.setCellFactory(redCellCallback);
+        tcI10.setCellFactory(redCellCallback);
+        tcI9.setCellFactory(redCellCallback);
+        tcI8.setCellFactory(redCellCallback);
+        tcI7.setCellFactory(redCellCallback);
+        tcI6.setCellFactory(redCellCallback);
+        tcI5.setCellFactory(redCellCallback);
+        tcI4.setCellFactory(redCellCallback);
+        tcI3.setCellFactory(redCellCallback);
+        tcI2.setCellFactory(redCellCallback);
+        tcI1.setCellFactory(redCellCallback);
 
         tcI30.setCellValueFactory(new PropertyValueFactory<Character, String>("i30"));
-        //tcI30.setCellFactory();
         tcI30.setCellValueFactory(new PropertyValueFactory<Character, String>("i30"));
         tcI29.setCellValueFactory(new PropertyValueFactory<Character, String>("i29"));
         tcI28.setCellValueFactory(new PropertyValueFactory<Character, String>("i28"));
@@ -175,6 +269,7 @@ public class Controller implements Initializable {
         tcI3.setCellValueFactory(new PropertyValueFactory<Character, String>("i3"));
         tcI2.setCellValueFactory(new PropertyValueFactory<Character, String>("i2"));
         tcI1.setCellValueFactory(new PropertyValueFactory<Character, String>("i1"));
+        
 
         ObservableSet<TableColumn<?,?>> highlightColumns = FXCollections.observableSet();
 
@@ -185,6 +280,7 @@ public class Controller implements Initializable {
         //Add predefined characters
         tblCharacters.getItems().addAll( fetchData() );
     }
+    
 
     @FXML
     public void addCharacter() {
@@ -307,9 +403,5 @@ public class Controller implements Initializable {
         col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
         return col ;
     }
-
-    class turnCell extends TableCell<Character, String> {
-
-    }
-
+    
 }

@@ -7,3 +7,7 @@
     -fx-background: yellow ;
     -fx-border-color: -fx-table-cell-border-color -fx-table-cell-border-color transparent transparent ;
 }
+
+.redText {
+	-fx-text-fill: 	#FF0000;
+}

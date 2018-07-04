@@ -1,9 +1,0 @@
-.attackCol {
-    -fx-alignment: CENTER;
-}
-
-.table-cell:highlight {
-    -fx-background-color: -fx-background ;
-    -fx-background: yellow ;
-    -fx-border-color: -fx-table-cell-border-color -fx-table-cell-border-color transparent transparent ;
-}
